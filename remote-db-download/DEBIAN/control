@@ -1,0 +1,7 @@
+Package: remote-db-download
+Version: 1.0
+Architecture: all
+Depends: ssh,whiptail,sshpass
+Priority: optional
+Maintainer: Kaushal Ghimire <official.kaushalg@gmail.com>
+Description: "Package that downloads remote mysql database via ssh and can import it into local sql server directly."

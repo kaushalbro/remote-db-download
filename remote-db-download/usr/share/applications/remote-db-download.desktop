@@ -1,0 +1,21 @@
+[Desktop Entry]
+
+# version of the Desktop Entry Specification (not package's version)
+Version=1.0
+
+Name=remote-db-download
+GenericName=remote-db-download
+Icon=/usr/share/icons/remote-db-download.xpm
+Comment=Go to the Ubuntu official website.
+
+# Defines the command or script to be executed when starting the app.
+Exec=/usr/bin/remote-db-download
+# Specifies an alternative executable to check for the presence of the app.
+TryExec=/usr/bin/remote-db-download
+
+# Should this app run in terminal ?
+Terminal=true
+
+Type=Application
+Categories=Utility;
+Keywords=remote-db-download;

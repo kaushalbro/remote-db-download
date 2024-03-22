@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+echo "looking for old version of remote-db-download"
+
+if [ -f "/etc/remote-db-download.conf" ]; then 
+        sudo rm -f /etc/remote-db-download.conf
+        echo "Removed old config from /etc/..."
+fi
+
+
+if [ -f "$HOME/bin/remote-db-download" ]; then 
+	sudo rm -f $HOME/bin/remote-db-download
+	echo "Removed old remote-db-download from ~/bin..."
+fi
+
+if [ -f "/usr/local/bin/remote-db-download" ]; then
+        sudo rm -f /usr/local/bin/remote-db-download
+        echo "Removed old remote-db-download from ~/usr/local/bin..."
+fi
+
+
+if [ -f "/usr/bin/remote-db-download" ]; then
+        sudo rm -f /usr/bin/remote-db-download
+        echo "Removed old remote-db-download from ~/usr/bin..."
+fi
+
+
+if [ -f "/usr/share/applications/remote-db-download.desktop" ]; then
+        sudo rm -f /usr/share/applications/remote-db-download.desktop
+        echo "Removed old remote-db-download from ~/usr/share/app..."
+fi
+
+if [ -f "/usr/share/icons/remote-db-download.xpm" ]; then
+        sudo rm -f /usr/share/icons/remote-db-download.xpm
+        echo "Removed old remote-db-download from ~/usr/share/icons/app..."
+fi
