@@ -1,6 +1,4 @@
-# remote-db-download
-
-# Description:
+# Description: remote-db-download
 This app is to download/backup sql/Mysql database(Any or All) from remote server via SSH <br>
 and download it into local computer. <br> 
 
