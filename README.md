@@ -18,6 +18,9 @@ Note: It has a feature to Import Remotely downloaded sql database into you local
 
 
 # Configuration Required after installation:
+
+Dependencies required: ssh, scp, whiptail
+
 To run this application, you need to set up a configuration file, <br>
 where you provide remote SSH and MySQL usernames and passwords to connect to the server and download the database to the local machine. <br>
 Local MySQL username and password are also required to import the database. Follow the steps below:
@@ -47,7 +50,9 @@ REMOTE_SQl_DB_USER="";  #Root User is Preffered
 REMOTE_SQl_DB_PASSWORD="";  #Root User password is Preffered
 
 
+# Uninstall app: 
 
+command: sudo apt remote remote-db-download
 
 # Copyright
 
