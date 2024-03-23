@@ -32,22 +32,22 @@ Local MySQL username and password are also required to import the database. Foll
 REMOTE_SSH_HOST="";   # ssh host/IP address here
 
 
-REMOTE_SSH_USER="";   # ssh hostname  here (that has permission to downlaod Mysql/sql server database)
+REMOTE_SSH_USER="";   # ssh hostname  here (that has permission to download Mysql/sql server database)
 
 
 REMOTE_SSH_PASSWORD="";   # ssh host password  here
 
 
-LOCAL_SQL_USER="";  #Root User is Preffered
+LOCAL_SQL_USER="";  #Root User is Preferred
 
 
-LOCAL_SQL_PASSWORD="";   #Root User password is Preffered
+LOCAL_SQL_PASSWORD="";   #Root User password is Preferred
 
 
-REMOTE_SQl_DB_USER="";  #Root User is Preffered
+REMOTE_SQl_DB_USER="";  #Root User is Preferred
 
 
-REMOTE_SQl_DB_PASSWORD="";  #Root User password is Preffered
+REMOTE_SQl_DB_PASSWORD="";  #Root User password is Preferred
 
 
 # Uninstall app: 
