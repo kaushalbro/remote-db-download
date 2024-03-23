@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "Connecting to SSH and Mysql server please wait......."
 CONFIG_FILE="/etc/remote-db-download.conf"
 if [ -z "$CONFIG_FILE" ]; then
     echo "Error: CONFIG_FILE variable is empty."
@@ -13,14 +13,14 @@ fi
 # Read configuration settings
 source "$CONFIG_FILE"
 
-isInstalled(){  
+isInstalled(){
     if [ ! "$(dpkg-query -W --showformat='${db:Status-Status}' "$1" 2>&1)" = installed ]; then
        echo -e $1 ' is not installed!!\n' $1' is required to run this programe!! '
        read -p "Enter Y|y to install:[Y/y] Key= " a
        if [[ ${a} = "Y" ||  ${a} = "y" ]]; then
           sudo apt install $1
           isInstalled $1
-      else 
+      else
           echo "wrong input"
           exit 0
       fi
@@ -29,9 +29,9 @@ isInstalled(){
 isInstalled "sshpass"
 isInstalled "whiptail"
 
-danger="\033[0;31m"	
+danger="\033[0;31m"
 done="\033[0;32m"
-warning="\033[0;33m"    
+warning="\033[0;33m"
 prompt_input() {
     local prompt="$1"
     whiptail --inputbox "$prompt" 10 70 3>&1 1>&2 2>&3;
@@ -60,44 +60,44 @@ function ask_schemaName_create_and_import(){
     schema_name=$(prompt_input "Enter new local schema/db name (Empty means not imported):")
     if [ $? -ne 0 ]; then
         echo " "
-        echo " "       
-        echo -e "${danger} $db_name import canceled."
-        echo -e "${done}  Db "$db_name".sql backup successfully in a current directory.."  ;       
         echo " "
-        echo " " 
+        echo -e "${danger} $db_name import canceled."
+        echo -e "${done}  Db "$db_name".sql backup successfully in a current directory.."  ;
+        echo " "
+        echo " "
         echo "0"
         exit 0
-    fi      
+    fi
     is_schema_exist=$(check_schema_existence "$LOCAL_SQL_USER" "$LOCAL_SQL_PASSWORD" "$schema_name")
     if [ "$is_schema_exist" -eq 1 ]; then
         prompt_yesno "Schema $schema_name  already exist in local. \nDo you want to override it ?"
         can_override_db=$?
-        if [ "$can_override_db" -eq 0 ]; then    
+        if [ "$can_override_db" -eq 0 ]; then
             drop_schema "$LOCAL_SQL_USER" "$LOCAL_SQL_PASSWORD" "$schema_name";
             create_schema "$LOCAL_SQL_USER" "$LOCAL_SQL_PASSWORD" "$schema_name";
             echo " "
-            echo " "       
-            echo -e "${warning}  Database is Importing from remote to local please wait...."  ;
-            echo -e "${warning}  Time depends upon the size of remote database and performance of local server...."  ;              
             echo " "
-            echo " " 
+            echo -e "${warning}  Database is Importing from remote to local please wait...."  ;
+            echo -e "${warning}  Time depends upon the size of remote database and performance of local server...."  ;
+            echo " "
+            echo " "
             import_database "$LOCAL_SQL_USER" "$LOCAL_SQL_PASSWORD" "$schema_name" "$new_dbname";
             exit 0;
-        else 
+        else
             ask_schemaName_create_and_import
             exit 0
         fi
     else
        create_schema "$LOCAL_SQL_USER" "$LOCAL_SQL_PASSWORD" "$schema_name";
        echo " "
-       echo " "       
+       echo " "
        echo -e "${warning}  Database is Importing from remote to local please wait...."  ;
        echo " "
-       echo -e "${warning}  Time depends upon the size of remote database and performance of local server...."  ;               
+       echo -e "${warning}  Time depends upon the size of remote database and performance of local server...."  ;
        echo " "
-       echo " " 
+       echo " "
        import_database "$LOCAL_SQL_USER" "$LOCAL_SQL_PASSWORD" "$schema_name" "$new_dbname";
-   fi    
+   fi
 }
 
 import_database(){
@@ -105,12 +105,12 @@ import_database(){
     local mysql_password="$2"
     local schema_name="$3"
     local file_path="$4"
-    mysql -u "$mysql_user" -p"$mysql_password"  $schema_name < ./$file_path 
+    mysql -u "$mysql_user" -p"$mysql_password"  $schema_name < ./$file_path
     echo " "
-    echo " " 
-    echo -e "${done} "$db_name".sql imported successfully from remote to local database with Schema name: $schema_name"  ;   
     echo " "
-    echo " " 
+    echo -e "${done} "$db_name".sql imported successfully from remote to local database with Schema name: $schema_name"  ;
+    echo " "
+    echo " "
 }
 
 check_schema_existence() {
@@ -127,10 +127,16 @@ check_schema_existence() {
 
 main(){
 current_time=$(date +"%Y-%m-%d-%H:%M:%S");
-sshpass -p "$REMOTE_SSH_PASSWORD" scp /etc/remote-db-download.conf "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST":/home/$REMOTE_SSH_USER/ ;
-sshpass -p "$REMOTE_SSH_PASSWORD" scp /usr/lib/remote-db-download/server "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST":/home/$REMOTE_SSH_USER/ ;
-remote_script=server_"$current_time" 
-sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST" -t "mv ./server $remote_script && ./"$remote_script"  && exit ; bash";
+sshpass -p "$REMOTE_SSH_PASSWORD" scp /etc/remote-db-download.conf "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST":/tmp/ ;
+sshpass -p "$REMOTE_SSH_PASSWORD" scp /usr/lib/remote-db-download/server "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST":/tmp/ ;
+remote_script=server_"$current_time"
+sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST" -t "mv /tmp/server /tmp/$remote_script && /tmp/$remote_script  && exit ; bash";
+is_file=$(sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST" "if [ -f /tmp/backup_db.sql ]; then echo "File exists"; else echo "File does not exist"; fi");
+if [ "$is_file" != "File exists" ]; then
+  sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST" -t "rm /tmp/$remote_script && exit ; bash";
+  echo "User Canceled.."
+  exit 0
+fi
 echo " ";
 echo " ";
 echo " ";
@@ -139,14 +145,16 @@ echo " ";
 echo " ";
 echo " ";
 # downloading database
-sshpass -p "$REMOTE_SSH_PASSWORD" scp "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST":/home/$REMOTE_SSH_USER/backup_db.sql ./  ;
-# removing script 
-sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST" -t "rm /home/"$REMOTE_SSH_USER"/"$remote_script"  /home/"$REMOTE_SSH_USER"/backup_db.sql  && exit ; bash";
+sshpass -p "$REMOTE_SSH_PASSWORD" scp "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST":/tmp/backup_db.sql ./  ;
+# removing script
+sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_USER"@"$REMOTE_SSH_HOST" -t "rm /tmp/$remote_script /tmp/backup_db.sql  && exit ; bash";
 # removing config
 echo " "
 echo " "
 userInput=$(prompt_input "Enter new database file Name (Empty means backup cancelled.):")
+echo "not calcles"
 if [ $? -ne 0 ]; then
+    rm ./backup_db.sql;
     echo -e "${danger}Backup canceled."
     exit 0
 fi
@@ -158,14 +166,14 @@ else
     db_name="${userInput// /_}-$current_time"
     new_dbname="$db_name.sql"
     mv ./backup_db.sql "$new_dbname"
-    
+
     prompt_yesno "Do you want to import to local database ?"
     is_import=$?
-    if [ "$is_import" -eq 0 ]; then    
+    if [ "$is_import" -eq 0 ]; then
         ask_schemaName_create_and_import "$new_dbname";
         exit 0;
-    else 
-        echo -e "${done}Db $db_name.sql backup successfully in a current directory.." ;   
+    else
+        echo -e "${done}Db $db_name.sql backup successfully in a current directory.." ;
         exit 0
     fi
 fi
