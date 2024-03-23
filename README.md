@@ -4,7 +4,7 @@ and download it into local computer. <br>
 
 Note: It has a feature to Import Remotely downloaded sql database into you local mysql database directly.
 
-(Upcoming Features: upload local sql file to remote mysql database)
+(Upcoming Features: upload local sql file to remote mysql database directly)
 
 # User Guide:
 (Steps)
