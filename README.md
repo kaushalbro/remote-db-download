@@ -3,6 +3,9 @@ This app is to download/backup sql/Mysql database(Any or All) from remote server
 and download it into local computer. <br> 
 
 Note: It has a feature to Import Remotely downloaded sql database into you local mysql database directly.
+
+(Upcoming Features: upload local sql file to remote mysql database)
+
 # User Guide:
 (Steps)
 1. Download remote-db-download.deb file from this official repository (apt downloading coming soon) <br>
