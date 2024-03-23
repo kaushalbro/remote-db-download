@@ -35,3 +35,19 @@ if [ -f "/usr/share/icons/remote-db-download.xpm" ]; then
         sudo rm -f /usr/share/icons/remote-db-download.xpm
         echo "Removed old remote-db-download from ~/usr/share/icons/app..."
 fi
+
+
+if [ -f "/usr/share/doc/remote-db-download/changelog.Debian.gz" ]; then
+        sudo rm -f /usr/share/doc/remote-db-download/changelog.Debian.gz
+        echo "Removed old remote-db-download docs from ~/usr/share/doc/..."
+fi
+
+if [ -f "/usr/share/doc/remote-db-download/copyright" ]; then
+        sudo rm -f /usr/share/doc/remote-db-download/copyright
+        echo "Removed old remote-db-download docs from ~/usr/share/doc/..."
+fi
+
+if [ -f "/usr/share/man/man1/remote-db-download.1.gz" ]; then
+        sudo rm -f /usr/share/man/man1/remote-db-download.1.gz
+        echo "Removed old remote-db-download user man from ~/usr/share/man/man1/..."
+fi
