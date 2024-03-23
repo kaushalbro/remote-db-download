@@ -10,7 +10,7 @@ Note: It has a feature to Import Remotely downloaded sql database into you local
 (Steps)
 1. Download remote-db-download.deb file from this official repository (apt downloading coming soon) <br>
 2. go to path/folder where the file has been download. <br>
-3. command:  dpkg -i ./remote-db-download.deb <br>
+3. command(to install):  dpkg -i ./remote-db-download.deb <br>
 4. Enter Y/y if asked before installation:<br>
 5. Follow Configuration part to configure app
 6. command: remote-db-download (to run this app)<br>
